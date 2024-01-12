@@ -27,7 +27,7 @@ const Circle: React.FC<CakeChartProps> = ({ slices }) => {
   return (
     <div
       className="relative w-full h-full"
-      style={{ width: "50vw", height: "50vw" }}
+      style={{ width: "25vw", height: "25vw" }}
     >
       {slices.map((slice, index) => {
         const sliceRotation = rotation

@@ -6,10 +6,10 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { CakeProvider } from "./contexts/cakeContext";
 import "./index.css";
 import IndexPage from "./IndexPage";
 import RootLayout from "./RootLayout";
-import "./index.css";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +21,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <CakeProvider>
+      <RouterProvider router={router} />
+    </CakeProvider>
   </React.StrictMode>
 );
