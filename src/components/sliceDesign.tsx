@@ -1,16 +1,19 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useCakeContext } from "../contexts/cakeContext";
 import "../index.css";
 
 const SliceDesign: React.FC = () => {
-  const { amount } = useCakeContext();
+  const { amount, setSlices } = useCakeContext();
+
   const [chosenColors, setChosenColors] = useState<string[]>(
     new Array(amount).fill("grey")
   );
   const [percentages, setPercentages] = useState<number[]>(
     new Array(amount).fill(0)
   );
+
+  const [error, setError] = useState(false);
 
   const handleButtonClick = (index: number) => {
     //går igenom colors för varje klick och uppdaterar till chosencolors arrayen med korrekt index för den knappen
@@ -25,12 +28,20 @@ const SliceDesign: React.FC = () => {
   };
 
   const handleRenderSlices = () => {
-    //här ska slices skapas
-    const slices = chosenColors.map((color, index) => ({
-      color,
-      percentage: percentages[index],
-    }));
-    console.log(slices);
+    //här skapas slices om det är 100% sammanlagt
+    const totalPercentage = percentages.reduce((sum, r) => sum + r, 0);
+
+    if (totalPercentage == 100) {
+      setError(false);
+      const slicesArray = chosenColors.map((color, index) => ({
+        id: index,
+        color: color,
+        percentage: percentages[index],
+      }));
+      setSlices(slicesArray);
+    } else {
+      setError(true);
+    }
   };
 
   const colors = [
@@ -48,6 +59,11 @@ const SliceDesign: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
+      {error ? (
+        <Box>
+          <Typography>Total percentage must be 100%</Typography>
+        </Box>
+      ) : null}
       {Array.from({ length: amount }, (_, index) => (
         <Box>
           <TextField
